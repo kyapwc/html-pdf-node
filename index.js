@@ -17,7 +17,7 @@ async function generatePdf(file, options, callback) {
 
   const browser = await options.chromeLambda.puppeteer.launch({
     args,
-    executablePath: await options.chromeLambda.executablePath,
+    executablePath: options.executablePath,
     headless: true,
   })
 
