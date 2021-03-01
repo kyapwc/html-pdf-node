@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 var Promise = require('bluebird');
 const hb = require('handlebars')
 
@@ -13,10 +13,17 @@ async function generatePdf(file, options, callback) {
     args = options.args;
     delete options.args;
   }
+  const temp = await options.chromeLambda.executablePath
 
-  const browser = await puppeteer.launch({
-    args: args
-  });
+  const browser = await options.chromeLambda.puppeteer.launch({
+    args,
+    executablePath: await options.chromeLambda.executablePath,
+    headless: true,
+  })
+
+  // const browser = await puppeteer.launch({
+  //   args: args,
+  // });
   const page = await browser.newPage();
 
   if(file.content) {
